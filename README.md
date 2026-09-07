@@ -1,70 +1,103 @@
-# 3D流水线 V1.5.1｜公开通用版
+# 一个人也能做的 UE 质感 3D 广告
 
+**3d-pipeline V1.5.1 · Codex Skill · 公开预览版**
 
-一套真实可安装、可运行的 Codex Skill，用于组织 1–30 秒 AI 制作的 UE 质感 3D 广告流程：Blender 工程化、Godot 自动编排、代表帧确认和最终渲染。
+用 Codex 组织 AI 建模、Blender 资产处理、Godot 场景与最终渲染。本文以 **15 秒竖屏广告** 为例，帮助初学者理解安装、配置、检查和确认的全过程。
 
+[下载 V1.5.1 ZIP](https://github.com/bjdenghao-cn/codex-3d-pipeline/raw/refs/heads/main/3d-pipeline-v1.5.1-public.zip) · [图文使用指南](docs/USAGE.md) · [文件校验](SHA256SUMS.txt) · [反馈问题](https://github.com/bjdenghao-cn/codex-3d-pipeline/issues)
 
-> “UE 质感”是画面目标；当前自动编排与渲染引擎为 Godot 4。项目必须进入 Unreal Engine 时，可使用 `export_gate` 产出的 GLB/FBX 继续交接。
+> **版本状态：**仍在修复完善。33 项单元测试通过只代表已有测试覆盖范围，不保证所有实际项目均可完成。
+>
+> **画面说明：**下方配图均为 AI 辅助生成的教学示意，不是本 Skill 的实机截图或成片证明。“UE 质感”是美术目标，当前渲染引擎为 **Godot 4**。
 
+<p align="center">
+<img src="docs/01-cover.png" width="620" alt="一个人也能做的 UE 质感 3D 广告，V1.5.1 公开预览版">
+</p>
 
-> V1.5.1 为持续完善中的公开预览版，仍有待修复问题。测试通过仅代表现有测试覆盖范围，不代表所有实际项目均可无故障完成。后续将继续更新。
+## 第一次使用，从这里开始
 
-## 直接下载
+1. **下载解压**上方 V1.5.1 ZIP，找到整个 `3d-pipeline` 文件夹。
+2. **安装 Skill**：放进 `C:\Users\你的用户名\.codex\skills`，确保最终路径为 `3d-pipeline\SKILL.md`。已有同名文件夹先备份。
+3. **重启 Codex**，复制下面的指令，让它先完成环境检查和项目配置。
 
+```text
+使用 $3d-pipeline 制作一条 15 秒、9:16 的 UE 质感 3D 广告。
+原创角色、明亮自然光、画面干净无杂色、纹理克制。
 
-[下载 3d-pipeline-v1.5.1-public.zip](https://github.com/bjdenghao-cn/codex-3d-pipeline/raw/refs/heads/main/3d-pipeline-v1.5.1-public.zip)
+先检查环境，说明缺少的软件或插件及部署方法。
+再确认脚本、资产清单、预算和输出位置，并配置本项目。
+每次告诉我：当前步骤、已完成、缺什么、我需确认什么、下一步。
+付费调用先确认预算；默认先给代表帧，我确认后再渲染完整视频。
+```
 
+安装不等于项目已经配置完成。你需要告诉 Codex 广告主题和剧情，并提供可用素材；它再配置真实输入、输出和阶段检查。
 
-## 安装
+## 需要准备什么？
 
+| 必需 | 作用 |
+| --- | --- |
+| Codex + 本 Skill | 项目组织和执行 |
+| Python 3.10+ | 执行器及检查脚本 |
+| Blender 4.x | 模型、骨骼、动作、导出 |
+| Godot 4.x | 场景、镜头、灯光、渲染 |
+| FFmpeg / FFprobe | 视频封装和技术检查 |
 
-1. 下载并解压 ZIP。
-2. 确认最外层文件夹名为 `3d-pipeline`。
-3. 将整个文件夹复制到：`C:\Users\你的用户名\.codex\skills\3d-pipeline`。
-4. 重新启动 Codex。
-5. 输入：`使用 $3d-pipeline，先检查我的电脑和项目环境。`
+**按项目选择：**Blender MCP、Mixamo、AI 3D 生成服务及额外绑骨/运镜/物理工具。Godot 默认使用 CLI/GDScript，不要求 Godot MCP。Mixamo 是外部服务，不是插件，需要用户自行登录并准备合法的本地文件。
 
+[查看插件作用、替代方案和部署说明 →](docs/USAGE.md)
 
-ZIP 内的 `INSTALL.md` 提供小白安装、验证命令和 15 秒广告示例提示词。
+<details>
+<summary>展开查看：必需工具与可选工具图解</summary>
 
+<img src="docs/03-tools.png" width="600" alt="必需软件与按项目选用的工具">
 
-## 基础环境
+</details>
 
+## 自动执行到哪一步？
 
-- 必需：Codex、Python 3.10+、Blender 4.x、Godot 4.x、FFmpeg / FFprobe
-- 可选：Blender MCP，用于需要实时操作 Blender GUI 的项目
-- 可选：Mixamo。它是外部服务，不是插件；用户自行合法下载 T-Pose 或动作 FBX
-- Godot 默认使用 CLI/GDScript，不要求 Godot MCP
+环境检查 → Blender 连接（按需）→ 模型检查 → 动作接入 → 骨骼检查 → 导出复验 → Godot 场景检查 → 代表帧 → 最终成片。
 
+<p align="center">
+<img src="docs/05-workflow.png" width="620" alt="Skill 九阶段中文流程与确认方式">
+</p>
 
-## V1.5.1 执行更新
+| 模式 | 如何继续 |
+| --- | --- |
+| 默认模式 | AI 自动检查并生成代表帧，你确认后再渲染全片 |
+| 已明确授权的受控无人托管 | 在项目确认范围内自检并继续，保留代表帧、关键帧和报告 |
 
-- 支持用户明确授权后的受控无人托管模式，自动执行到成片并保留代表帧、关键帧和报告。
-- 支持本项目已批准模型之间的顺序路由，记录准确模型和选择理由。
-- 默认模式仍在代表帧暂停，确认后再渲染全片。
-- 付费调用受项目预算和重试上限约束，公开发布与购买许可需要单独授权。
+缺文件、检查失败、阶段未配置或需要用户登录时仍可能暂停。自动执行不扩大预算、购买许可、公开发布或项目外操作的权限。
 
-## V1.5 场景与动作门禁
+[查看四张小白检查图：模型 → 动作 → 场景 → 样张与渲染 →](docs/USAGE.md)
 
+## 验证安装
 
-- 正式场景环境：PBR 地面、景深层次、独特地标、重复度、空屏率和镜头路径覆盖
-- 角色、载具和道具：接触点、关节角度、父级与运动空间
-- 载具动作：模型前轴、运动方向和相机相对方位
-- VFX：闪光、火焰、烟、尘、碎片分层，以及上升、扩散、消隐、风向、遮挡和高光裁切
-- 关键语义证据缺失时，代表帧和最终渲染会被阻止
+在 PowerShell 中运行：
 
+```powershell
+$skill = Join-Path $env:USERPROFILE '.codex\skills\3d-pipeline'
+python "$skill\scripts\pipeline.py" --help
+python -m unittest discover -s "$skill\scripts\tests" -p 'test_*.py'
+```
 
-## 验证
+本次发布包已有 33 项单元测试通过。测试和帮助命令验证的是执行器，不替代实际项目验收。遇到 `pending` 或 `configured: false`，请先让 Codex 补齐本项目配置。
 
+## V1.5.1 更新内容
 
-本公开包已经通过 33 项单元测试、Skill 结构校验、公开信息扫描和解压复测。
+- 项目级多模型顺序路由，记录真实模型和选择理由。
+- 明确授权后支持受控无人托管执行。
+- 沿用正式环境、角色/载具/道具关系、运动方向和 VFX 语义检查。
+- 支持检查报告、状态记录、断点恢复及受影响阶段复验。
 
+## 下载校验与许可
 
-## 文件校验
+文件：`3d-pipeline-v1.5.1-public.zip`
 
+SHA-256：
 
-`SHA-256  6DE5EB5758C7A6B7D2D2EA6CBE6413F9258975F7153A120C0B48B852B8171D16`
-
+```text
+6DE5EB5758C7A6B7D2D2EA6CBE6413F9258975F7153A120C0B48B852B8171D16
+```
 
 本仓库暂未附加开源许可证。除下载、安装和本地评估之外的复制、修改、再分发或商用授权，以权利人后续说明为准。
 
